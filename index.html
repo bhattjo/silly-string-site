@@ -20,7 +20,33 @@
     </div>
 
     <p class="tagline">Twelve cans. Four colors. Zero grown-up energy.</p>
+
+    <section class="joke-card">
+      <p class="joke-label">Dad joke break</p>
+      <p class="joke-text" id="joke-text">Loading a joke…</p>
+      <button class="joke-button" id="joke-button" type="button">Another one</button>
+    </section>
   </main>
 
+  <script>
+    const jokeText = document.getElementById('joke-text');
+    const jokeButton = document.getElementById('joke-button');
+
+    async function getJoke() {
+      jokeText.textContent = 'Loading a joke…';
+      try {
+        const res = await fetch('https://icanhazdadjoke.com/', {
+          headers: { Accept: 'application/json' }
+        });
+        const data = await res.json();
+        jokeText.textContent = data.joke;
+      } catch (err) {
+        jokeText.textContent = "Couldn't fetch a joke — silly string it is instead.";
+      }
+    }
+
+    jokeButton.addEventListener('click', getJoke);
+    getJoke();
+  </script>
 </body>
 </html>
